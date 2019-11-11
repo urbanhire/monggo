@@ -1,6 +1,6 @@
 {
   "name": "monggo",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Monggo is a connection pooling for mongodb based on the singleton pattern on node js. This package is a wrapper of mongodb native driver package",
   "main": "index.js",
   "scripts": {
