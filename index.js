@@ -3,16 +3,15 @@ const event = require('events')
 
 class Database {
 
-    constructor() {
+    constructor(uri, dbname, options = this.options) {
         if(!!Database.instance) {
             return Database.instance
         }
         Database.instance = this
 
         this.db = null
-        this.host = null
-        this.port = null
-        this.dbName = null
+        this.dbName = dbname
+        this.uri = uri
 
         this.options = {
             useNewUrlParser: true,
@@ -26,16 +25,8 @@ class Database {
         return this
     }
 
-    setParam = (host, port, databaseName, options = this.options) => {
-        this.host = host
-        this.port = port
-        this.dbName = databaseName
-        this.options = options
-    }
-
-    _createConnection = async () => {
-        const uri = `mongodb://${this.host}:${this.port}/${this.dbName}`
-        const client = new MongoClient(uri, this.options)
+    async _createConnection() {
+        const client = new MongoClient(this.uri, this.options)
         try{
             await client.connect()
             this.db = client.db(this.dbName)
@@ -49,7 +40,7 @@ class Database {
         })
     }
 
-    getConnection = async () => {
+    async getConnection() {
         if(!this.db) await this._createConnection()
         return this.db
     }

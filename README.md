@@ -22,9 +22,7 @@ npm i monggo
 ```
 var monggo = require('monggo')
 
-const db = new monggo()
-db.setParam('localhost', 27017, 'dbname')
-const database = db.getConnection()
+const db = new monggo('mongodb://localhost:27017/dbname', 'dbname')
 
 var collectionName = 'customers'
 var customer = {
@@ -32,7 +30,14 @@ var customer = {
   address: 'Bintaro'
 }
 
-const r = database.collection(collectionName).insertOne(customer)
+async function run() {
+  const database = await db.getConnection()
+  const r = await database.collection(collectionName).insertOne(customer)
+  console.log(r.insertedCount)
+}
+
+run()
+
 ```
 
 ## ⛏️ Built Using <a name = "built_using"></a>
