@@ -3,7 +3,7 @@ const event = require('events')
 
 class Database {
 
-    constructor(uri, dbname, options = this.options) {
+    constructor(uri, dbname, options) {
         if(!!Database.instance) {
             return Database.instance
         }
@@ -13,14 +13,19 @@ class Database {
         this.dbName = dbname
         this.uri = uri
 
+        this.connection = new event.EventEmitter()
+
+        if(options) {
+           this.options = options
+           return this
+        }
+
         this.options = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             reconnectTries: 1,
             reconnectInterval: 500
         }
-
-        this.connection = new event.EventEmitter()
 
         return this
     }
